@@ -1,0 +1,1 @@
+/usr/bin/cc    CMakeFiles/main.dir/main.c.o CMakeFiles/main.dir/library/array.c.o CMakeFiles/main.dir/library/lib_int_algebra.c.o CMakeFiles/main.dir/library/lib_float_algebra.c.o  -o main 
