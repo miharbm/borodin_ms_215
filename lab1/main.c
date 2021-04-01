@@ -22,11 +22,6 @@ const char * MENU_WHERE[] = {"0. Отмена",
                              "1. positive"};
 const int MENU_WHERE_SIZE = sizeof(MENU_WHERE) / sizeof(MENU_WHERE[0]);
 
-const char * MENU_OUTPUT[] = {"0. Отмена",
-                              "1. вывод в терминал"
-                              "2. вывод в файл"};
-const int MENU_OUTPUT_SIZE = sizeof(MENU_OUTPUT) / sizeof(MENU_OUTPUT[0]);
-
 
 int dialog (const char *msgs[], int n);
 void delay (int milli_seconds);
@@ -264,28 +259,4 @@ void delay (int milli_seconds) {
     int nano_seconds = 1000 * milli_seconds;
     clock_t start_time = clock();
     while (clock() < start_time + nano_seconds);
-}
-
-void output_menu(array_t * array) {
-
-    int menu;
-    do {
-        menu = dialog(MENU_OUTPUT, MENU_OUTPUT_SIZE);
-
-        switch(menu) {
-            case 0: break;
-
-            case 1: {
-                array->print(array);
-            } break;
-
-            case 2: {
-
-            } break;
-
-            default:
-                printf("***Error, please try again***\n");
-                break;
-        }
-    } while(menu != 0);
 }
