@@ -1,3 +1,6 @@
+#include "./lib_int_algebra.h"
+
+
 int compare_int (const void *left, const void *right) {
 
     long compare;

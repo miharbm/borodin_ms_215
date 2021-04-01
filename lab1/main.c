@@ -1,20 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <time.h>
-#include <stdbool.h>
-
-#define bool _Bool
-
-
 #include "./library/array.h"
-#include "./library/lib_int_algebra.h"
-#include "./library/lib_float_algebra.h"
-
-#include "./library/array.c"
-#include "./library/lib_int_algebra.c"
-#include "./library/lib_float_algebra.c"
 
 
 const char * MENU_MAIN[] = {"0. Отмена",

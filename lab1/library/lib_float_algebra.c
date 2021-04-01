@@ -1,3 +1,6 @@
+#include "./lib_float_algebra.h"
+
+
 int compare_float (const void *left, const void *right) {
 
     double compare;

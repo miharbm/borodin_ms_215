@@ -6,6 +6,12 @@
 #include <string.h>
 #include <math.h>
 #include <time.h>
+#include <stdbool.h>
+
+#include "./lib_int_algebra.h"
+#include "./lib_float_algebra.h"
+
+#define bool _Bool
 
 typedef struct array_t {
 

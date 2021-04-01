@@ -1,3 +1,5 @@
+#include "./array.h"
+
 void destructArray (array_t *array) {
 
     free(array->elements);
