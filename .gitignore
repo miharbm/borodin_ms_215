@@ -2,3 +2,6 @@
 /lab1/build
 /.vscode
 /lab1/output_example.c
+
+/lab2/cmake-build-debug/
+/lab2/.idea/
