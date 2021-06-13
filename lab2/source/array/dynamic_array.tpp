@@ -6,7 +6,7 @@ DynamicArray<T>::DynamicArray(): data_(nullptr), length_(0) {}
 template<typename T>
 DynamicArray<T>::DynamicArray(const T *data, int length) {
     if (length < 0)
-        throw std::out_of_range("negative size");
+        throw std::out_of_range("from DynamicArray<T>::DynamicArray()");
     else if (length > 0)
         data_ = new T[length];
     else
@@ -18,7 +18,7 @@ DynamicArray<T>::DynamicArray(const T *data, int length) {
 
 template<typename T>
 DynamicArray<T>::DynamicArray(int length) {
-    if (length < 0) throw std::length_error("negative size");
+    if (length < 0) throw std::out_of_range("from DynamicArray<T>::DynamicArray()");
     length_ = length;
     if (length != 0)
         data_ = new T[length];
@@ -40,8 +40,10 @@ DynamicArray<T>::DynamicArray(const DynamicArray<T> &array) {
 
 template<typename T>
 T &DynamicArray<T>::Get(int index) {
-    if (index < 0) throw std::out_of_range("negative index");
-    if (index >= length_) Resize(index + 1);
+    if (index < 0)
+        throw std::out_of_range("from DDynamicArray<T>::Get");
+    if (index >= length_)
+        Resize(index + 1);
     return data_[index];
 }
 
@@ -66,9 +68,9 @@ void DynamicArray<T>::Insert(int insert_index, T value) {
     length_++;
 
     if (insert_index < 0)
-        throw std::out_of_range("negative index");
+        throw std::out_of_range("from DynamicArray<T>::Insert");
     if (insert_index >= length_)
-        throw std::out_of_range("index more of length");
+        throw std::out_of_range("from DynamicArray<T>::Insert");
 
     T *new_data = new T[length_];
 
@@ -89,7 +91,7 @@ template<typename T>
 void DynamicArray<T>::Resize(int length) {
 
     if (length < 0)
-        throw std::length_error("negative size");
+        throw std::length_error("from DynamicArray<T>::Resize()");
 
     if (length == 0) {
         delete data_;
@@ -122,7 +124,7 @@ DynamicArray<T>::~DynamicArray() {
 template<class T>
 void DynamicArray<T>::Delete(int index) {
     if (index >= length_ || index < 0)
-        throw std::out_of_range("index is more then length or negative");
+        throw std::out_of_range("from DynamicArray<T>::Delete()");
 
     length_--;
 

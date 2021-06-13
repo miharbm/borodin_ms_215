@@ -38,7 +38,7 @@ template<class T>
 T &LinkedList<T>::Back() const {
     try {
         if (!this->length_)
-            throw "The list is empty!";
+            throw std::out_of_range ("from LinkedList<T>::Back()");
         Node *node = this->head_;
         for (int i = 0; i < this->length_; ++i) {
             node = node->pNext;
@@ -54,7 +54,7 @@ template<class T>
 T &LinkedList<T>::Get(int index) const {
     try {
         if (index >= this->length_ || index < 0)
-            throw "Index out of range!";
+            throw std::out_of_range ("from LinkedList<T>::Get()");
         Node *node = this->head_;
         for (int i = 0; i < index; ++i) {
             node = node->pNext;
@@ -70,7 +70,7 @@ template<class T>
 void LinkedList<T>::PopFront() {
     try {
         if (!this->length_)
-            throw "The list is empty!";
+            throw std::out_of_range ("from LinkedList<T>::PopFront()");
         Node* del_node = this->head_;
         this->head_ = this->head_->pNext;
         delete del_node;
@@ -84,7 +84,7 @@ template<class T>
 void LinkedList<T>::PopBack() {
     try {
         if (!this->length_)
-            throw "The list is empty!";
+            throw std::out_of_range ("from LinkedList<T>::PopBack()");
         Node* node = this->head_;
         for (int i = 0; i < this->length_ - 1; ++i) node = node->pNext;
         Node* del_node = node->pNext;
@@ -106,7 +106,7 @@ template<class T>
 void LinkedList<T>::DelByIndex(int index) {
     try {
         if (index < 0 || index >= length_)
-            throw "Index is out of range";
+            throw std::out_of_range ("from LinkedList<T>::DelByIndex()");
         if (!index) {
             Node *n_del = head_;
             head_ = head_->pNext;
@@ -131,7 +131,7 @@ template<class T>
 LinkedList<T> *LinkedList<T>::GetSubList(int start_index, int end_index) const {
     try {
         if (start_index < 0 || start_index >= this->length_ || end_index < 0 || end_index > this->length_)
-            throw "Index is out of range!";
+            throw std::out_of_range ("from LinkedList<T>::GetSubList");
         if (start_index > end_index)
             std::swap(start_index, end_index);
         LinkedList<T>* list = new LinkedList<T>;
@@ -183,7 +183,7 @@ template<class T>
 void LinkedList<T>::InsertAt(const T &data, int index) {
     try {
         if (index < 0 || index > this->length_)
-            throw "Index is out of range!";
+            throw std::out_of_range ("from LinkedList<T>::InsertAt");
         if (!index) {
             this->PushFront(data);
             return;
@@ -209,7 +209,7 @@ template<class T>
 void LinkedList<T>::Set(const T &data, int index) {
     try {
         if (index < 0 || index > this->length_)
-            throw "Index is out of range!";
+            throw std::out_of_range ("from LinkedList<T>::Set");
         if (index == length_) {
             this->PushBack(data);
             return;
@@ -228,7 +228,7 @@ template<class T>
 LinkedList<T> *LinkedList<T>::Concat(LinkedList<T> *list) const {
     try {
         if (list == nullptr)
-            throw "There is no list to contact!";
+            throw std::out_of_range ("from LinkedList<T>::Concat");
         LinkedList* new_list = new LinkedList;
         for (int i = 0; i < this->GetLength(); ++i) {
             new_list->PushBack(this->Get(i));
