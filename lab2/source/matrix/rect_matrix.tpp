@@ -36,12 +36,22 @@ void RectMatrix<T>::Set(int num_rows, int num_columns) {
 
 template<class T>
 int &RectMatrix<T>::At(int row, int column) {
-    return elements->at(row).at(column);
+    return elements_->at(row).at(column);
 }
 
 template<class T>
 int RectMatrix<T>::At(int row, int column) const {
     return elements_->at(row).at(column);
+}
+
+template<class T>
+ArraySequence<T> &RectMatrix<T>::operator[](int i) {
+    return elements_[i];
+}
+
+template<class T>
+ArraySequence<T> &RectMatrix<T>::operator[](int i) const {
+    return elements_->at(i);
 }
 
 template<class T>
@@ -53,4 +63,100 @@ template<class T>
 [[nodiscard]] size_t RectMatrix<T>::GetNumRows() const {
     return num_rows_;
 }
+
+template<class T>
+RectMatrix<T> &RectMatrix<T>::operator = (const RectMatrix<T> &matrix) {
+    this->num_rows_ = matrix.num_rows_;
+    this->num_columns_ = matrix.num_columns_;
+    for (int i = 0; i < matrix.num_rows_; ++i) {
+        for (int j = 0; j < matrix.num_columns_; ++j) {
+            this->elements_[i][j] = matrix.elements_.at(i).at(j);
+        }
+    }
+    return *this;
+}
+
+template<class T>
+RectMatrix<T> operator * (T lambda, const RectMatrix<T> &matrix) {
+    RectMatrix<T> answer(matrix.num_rows_, matrix.num_columns_);
+    for (int i = 0; i < matrix.GetNumRows(); ++i) {
+        for (int j = 0; j < matrix.GetNumColumns(); ++j) {
+            answer.elements_[i][j] = lambda * matrix.elements_.at(i).at(j);
+        }
+    }
+    return answer;
+}
+
+template<class T>
+bool operator==(const RectMatrix<T> &one, const RectMatrix<T> &two) {
+    if (one.GetNumRows() != two.GetNumRows()) {
+        return false;
+    }
+
+    if (one.GetNumColumns() != two.GetNumColumns()) {
+        return false;
+    }
+
+    for (int row = 0; row < one.GetNumRows(); ++row) {
+        for (int column = 0; column < one.GetNumColumns(); ++column) {
+            if (one.At(row, column) != two.At(row, column)) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+template<class T>
+RectMatrix<T> operator + (const RectMatrix<T> &one, const RectMatrix<T> &two) {
+    if (one.GetNumRows() != two.GetNumRows()) {
+        throw std::out_of_range("from RectMatrix<T> operator + ()");
+    }
+
+    if (one.GetNumColumns() != two.GetNumColumns()) {
+        throw std::out_of_range("from RectMatrix<T> operator + ()");
+    }
+
+    RectMatrix<T> result(one.GetNumRows(), one.GetNumColumns());
+    for (int row = 0; row < result.GetNumRows(); ++row) {
+        for (int column = 0; column < result.GetNumColumns(); ++column) {
+            result.At(row, column) = one.At(row, column) + two.At(row, column);
+        }
+    }
+
+    return result;
+}
+
+template<class T>
+std::istream &operator >> (std::istream &in, RectMatrix<T> &matrix) {
+    int num_rows, num_columns;
+    in >> num_rows >> num_columns;
+
+    matrix.Set(num_rows, num_columns);
+    for (int row = 0; row < num_rows; ++row) {
+        for (int column = 0; column < num_columns; ++column) {
+            in >> matrix.At(row, column);
+        }
+    }
+
+    return in;
+}
+
+template<class T>
+std::ostream &operator<<(std::ostream &out, const RectMatrix<T> &matrix) {
+    out << matrix.GetNumRows() << " " << matrix.GetNumColumns() << std::endl;
+    for (int row = 0; row < matrix.GetNumRows(); ++row) {
+        for (int column = 0; column < matrix.GetNumColumns(); ++column) {
+            if (column > 0) {
+                out << " ";
+            }
+            out << matrix.At(row, column);
+        }
+        out << std::endl;
+    }
+
+    return out;
+}
+
 #endif //LAB2_RECT_MATRIX_TPP
