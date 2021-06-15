@@ -49,11 +49,6 @@ T &RectMatrix<T>::At(int row, int column) {
     return elements_.at(row).at(column);
 }
 
-//template<class T>
-//int RectMatrix<T>::At(int row, int column) const {
-//    return elements_.at(row).at(column);
-//}
-
 template<class T>
 ArraySequence<T> &RectMatrix<T>::operator[](int i) {
     return elements_[i];
@@ -72,6 +67,23 @@ template<class T>
 template<class T>
 [[nodiscard]] size_t RectMatrix<T>::GetNumRows() const {
     return num_rows_;
+}
+
+template<class T>
+RectMatrix<T> &RectMatrix<T>::transpose() {
+
+    RectMatrix<T> result;
+    result.num_rows_ = num_columns_;
+    result.num_columns_ = num_rows_;
+    result.Set(result.GetNumRows(), result.GetNumColumns());
+    for (size_t row = 0; row < result.GetNumRows(); ++row) {
+        for (size_t column = 0; column < result.GetNumColumns(); ++column) {
+            result[row][column] = this->At(column, row) ;
+        }
+    }
+//    std::cout<<"result"<<result<<std::endl;
+
+    return result;
 }
 
 template<class T>
@@ -102,19 +114,24 @@ RectMatrix<T> operator + (const RectMatrix<T> &one, const RectMatrix<T> &two) {
             result[row][column] = one[row][column] + two[row][column];
         }
     }
-//    std::cout<<result;
+
     return result;
 }
 
 template<class T>
 RectMatrix<T> operator * (T lambda, const RectMatrix<T> &matrix) {
-    RectMatrix<T> answer(matrix.num_rows_, matrix.num_columns_);
-    for (int i = 0; i < matrix.GetNumRows(); ++i) {
-        for (int j = 0; j < matrix.GetNumColumns(); ++j) {
-            answer.elements_[i][j] = lambda * matrix.elements_.at(i).at(j);
+
+    RectMatrix<T> result;
+    result.num_rows_ = matrix.GetNumRows();
+    result.num_columns_ = matrix.GetNumColumns();
+    result.Set(result.GetNumRows(), result.GetNumColumns());
+    for (size_t row = 0; row < result.GetNumRows(); ++row) {
+        for (size_t column = 0; column < result.GetNumColumns(); ++column) {
+            result[row][column] = lambda * matrix[row][column];
         }
     }
-    return answer;
+
+    return result;
 }
 
 template<class T>
@@ -171,17 +188,5 @@ std::ostream &operator<<(std::ostream &out, /*const*/ RectMatrix<T> &matrix) {
     return out;
 }
 
-template<class T>
-//RectMatrix<T>::~RectMatrix<T>() {
-////    for(size_t rows = 0; rows < num_rows_; rows++){
-////      ~elements_[rows];
-////    }
-////    elements_.ArraySequence<~ArraySequence<T>>();
-////    elements_.~ArraySequence<ArraySequence<T>>();
-////    elements_.~ArraySequence<T>();
-////    elements_.~ArraySequence<T>();
-////        delete &elements_;
-//delete &elements_;
-//}
 
 #endif //LAB2_RECT_MATRIX_TPP

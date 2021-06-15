@@ -19,10 +19,9 @@ public:
     RectMatrix(const RectMatrix<T> &matrix);
 
     void Set(int num_rows, int num_columns);
-
-//    [[nodiscard]] int At(int row, int column) const;
     T &At(int row, int column);
 
+    RectMatrix<T> &transpose();
     ArraySequence<T> &operator[] (int i);
     ArraySequence<T> &operator[] (int i) const;
     [[nodiscard]] size_t GetNumColumns() const;
@@ -40,7 +39,7 @@ public:
     template <class U>
     friend RectMatrix<U> operator*(U lambda, const RectMatrix<U>&RectMatrix);
 
-//    ~RectMatrix();
+
 };
 
 
