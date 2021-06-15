@@ -35,6 +35,8 @@ public:
     void Remove(int index) override;
     Sequence<T>* GetSubSequence(int start_index, int end_index) const override;
     Sequence<T>* Concat(Sequence <T> *seq) const override;
+    T &at(int index) const;
+//    T &at(int index) const;
 
     //Destructor
     ~ArraySequence();

@@ -99,4 +99,18 @@ void ArraySequence<T>::Remove(int index) {
     array_->Delete(index);
 }
 
+template<class T>
+T &ArraySequence<T>::at(int index) const{
+    if (index >= this->GetLength())
+        throw std::out_of_range("from ArraySequence<T>::at()");
+    return array_->Get(index);
+}
+
+//template<class T>
+//T &ArraySequence<T>::at(int index) const {
+//    if (index >= this->GetLength())
+//        throw std::out_of_range("from ArraySequence<T>::at()");
+//    return array_->Get(index);
+//}
+
 #endif //LAB2_ARRAY_SEQUENCE_TPP

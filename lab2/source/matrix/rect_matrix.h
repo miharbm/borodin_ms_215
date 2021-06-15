@@ -16,20 +16,19 @@ public:
 
     RectMatrix();
     RectMatrix(int num_rows, int num_columns);
+    RectMatrix(const RectMatrix<T> &matrix);
 
     void Set(int num_rows, int num_columns);
 
-    [[nodiscard]] int At(int row, int column) const;
-    int &At(int row, int column);
-
-    RectMatrix<T>& operator=(const RectMatrix<T>& matrix);
-
+//    [[nodiscard]] int At(int row, int column) const;
+    T &At(int row, int column);
 
     ArraySequence<T> &operator[] (int i);
     ArraySequence<T> &operator[] (int i) const;
     [[nodiscard]] size_t GetNumColumns() const;
     [[nodiscard]] size_t GetNumRows() const;
 
+    RectMatrix<T>& operator=(const RectMatrix<T>& matrix);
     template <typename U>
     friend RectMatrix<U> operator+(const RectMatrix<U>& one, const RectMatrix<U>& two);
     template <typename U>
@@ -37,11 +36,11 @@ public:
     template <typename U>
     friend std::istream& operator>>(std::istream& in,RectMatrix<U>&RectMatrix);
     template <typename U>
-    friend std::ostream& operator<<(std::ostream& out, const RectMatrix<U>&RectMatrix);
+    friend std::ostream& operator<<(std::ostream& out, /*const*/ RectMatrix<U> &RectMatrix);
     template <class U>
     friend RectMatrix<U> operator*(U lambda, const RectMatrix<U>&RectMatrix);
 
-
+//    ~RectMatrix();
 };
 
 
