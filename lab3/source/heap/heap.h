@@ -1,7 +1,3 @@
-//
-// Created by michael on 05.07.2021.
-//
-
 #ifndef LAB3_HEAP_H
 #define LAB3_HEAP_H
 

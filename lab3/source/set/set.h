@@ -19,7 +19,7 @@ public:
 
     //Decomposition
     void Clear();
-    int GetLength() const;
+    [[nodiscard]] int GetLength() const;
 
     //Operations
     void Insert(T &value);

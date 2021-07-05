@@ -59,7 +59,9 @@ void Set<T>::DeleteByValue(T &value) {
 
 template<class T>
 Set<T> *Set<T>::Union(Set *set) {
-    Set<T> *_union = set;
+
+    Set<T> *_union(set) ;
+
     for (int i = 0; i < GetLength(); ++i) {
         _union->Insert((*_elements)[i]);
     }

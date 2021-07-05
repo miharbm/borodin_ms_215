@@ -3,7 +3,7 @@
 #include<iostream>
 #include<string>
 #include "../person/person.h"
-//#include "complex.h"
+
 using namespace std;
 
 int INT_INF = 10e8;
@@ -20,30 +20,6 @@ int readInt(int &a) {
     if (mode == 0) while (getchar() != '\n') {};
     return mode;
 }
-
-//int readComplex(Complex &a) {
-//    int mode = 0;
-//    double Re, Im;
-//    cout << "Input real part: ";
-//    cin >> Re;
-//    if (!cin) {
-//        cin.clear();
-//        cout << "Incorrect input. Please, enter one float number.\n";
-//        mode = -1;
-//        return mode;
-//    }
-//    cout << "\t\tInput imaginary part: ";
-//    cin >> Im;
-//    if (!cin) {
-//        cin.clear();
-//        cout << "Incorrect input. Please, enter one float number.\n";
-//        mode = -1;
-//        return mode;
-//    }
-//    a.Set(Re, Im);
-//    if (mode == 0) while (getchar() != '\n') {};
-//    return mode;
-//}
 
 int readFloat(float &a) {
     int mode = 0;

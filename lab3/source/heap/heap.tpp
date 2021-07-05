@@ -103,22 +103,31 @@ T &Heap<T>::ExtractMax() {
     return t;
 }
 
+//template<class T>
+//bool Heap<T>::CheckEntry(T &value) {
+//    if (_heap->GetLength() == 0) return false;
+//    int maxLevel = floor(log(_heap->GetLength())) + 1;
+//    for (int i = 0; i <= maxLevel; ++i) {
+//        int leftLimit = pow(2, i) - 1;
+//        int rightLimit = pow(2, i + 1) - 1;
+//        bool isMore = false;
+//        for (int j = leftLimit; j < rightLimit; ++j) {
+//            if (j < _heap->GetLength() && (*_heap)[j] == value)
+//                return true;
+//            if (j < _heap->GetLength() && (*_heap)[j] > value)
+//                isMore = true;
+//
+//        }
+//        if (!isMore) return false;
+//    }
+//    return false;
+//}
+
 template<class T>
 bool Heap<T>::CheckEntry(T &value) {
     if (_heap->GetLength() == 0) return false;
-    int maxLevel = floor(log(_heap->GetLength())) + 1;
-    for (int i = 0; i <= maxLevel; ++i) {
-        int leftLimit = pow(2, i) - 1;
-        int rightLimit = pow(2, i + 1) - 1;
-        bool isMore = false;
-        for (int j = leftLimit; j < rightLimit; ++j) {
-            if (j < _heap->GetLength() && (*_heap)[j] == value)
-                return true;
-            if (j < _heap->GetLength() && (*_heap)[j] > value)
-                isMore = true;
-
-        }
-        if (!isMore) return false;
+    for (int i = 0; i < _heap->GetLength(); ++i) {
+        if ((*_heap)[i] == value) return true;
     }
     return false;
 }

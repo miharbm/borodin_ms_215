@@ -5,63 +5,201 @@
 #include "extrafunctions/extrafunctions.h"
 #include "./person/person.h"
 
-//#include "complex.h"
 using namespace std;
 
-const char *MSGS_TYPE[] = {"Which type of function do you need?",
-                           "0. Quit",
-                           "1. Make integer sets",
-                           "2. Make float sets",
-                           "3. Make complex sets",
-                           "4. Make string sets",
-                           "5. Make person sets",
+const char *MENU_MAIN[] = {/*"Type of sets",*/
+                           "Quit",
+                           "Integer",
+                           "Float",
+                           "String",
+                           "Person",
 };
-const int MSGS_TYPE_SIZE = sizeof(MSGS_TYPE) / sizeof(MSGS_TYPE[0]);
+const int MENU_MAIN_SIZE = sizeof(MENU_MAIN) / sizeof(MENU_MAIN[0]);
 
-const char *MSGS[] = {"What do you want to do?",
-                      "0. Quit",
-                      "1. To previous step",
-                      "2. First set generate (max n elements)",
-                      "3. Second set generate (max n elements)",
-                      "4. First set max value",
-                      "5. Second set max value",
-                      "6. First set insert value",
-                      "7. Second set insert value",
-                      "8. Union",
-                      "9. Crossing",
-                      "10. Subtraction (first set - second set)",
-                      "11. Subtraction (second set - first set)",
-                      "12. Subset inclusion check (second set in first set)",
-                      "13. Subset inclusion check (first set in second set)",
-                      "14. Equality check",
+const char *MENU_SECOND[] = {/*"Type of sets",*/
+                           "Qiit",
+                           "Back",
+                           "First set generate",
+                           "Second set generate",
+                           "First set insert value",
+                           "Second set insert value",
+                           "Next menu"
 };
-const int MSGS_SIZE = sizeof(MSGS) / sizeof(MSGS[0]);
+const int MENU_SECOND_SIZE = sizeof(MENU_SECOND) / sizeof(MENU_SECOND[0]);
 
-int dialog(const char *msgs[], int n) {
-    char *error = "";
+const char *MENU_THIRD[] = {/*"Actions",*/
+                            "Back",
+                            "First set max value",
+                            "Second set max value",
+                            "Union",
+                            "Crossing",
+                            "Subtraction (first set - second set)",
+                            "Subtraction (second set - first set)",
+                            "Subset inclusion check (second set in first set)",
+                            "Subset inclusion check (first set in second set)",
+                            "Equality check"
+};
+const int MENU_THIRD_SIZE = sizeof(MENU_THIRD) / sizeof(MENU_THIRD[0]);
+
+
+
+int dialog(const char **msgs, int n) {
     int choice;
+    char temp;
     do {
-        cout << error << endl;
-        error = "Incorrect input. Please, enter one positive integer number.\n";
-        for (int i = 0; i < n; ++i) {
-            cout << msgs[i] << endl;
-        }
-        cout << "Make your choice: ";
-        choice = getchar() - '0';
-        char c = getchar();
-        while (c != '\n') {
-            if (0 <= (int)c - '0' && (int)c - '0' <= 9)
-                choice = choice * 10 + (c - '0');
-            c = getchar();
-        }
+        std::cout << std::endl << std::endl;
+
+        for (int i = 0; i < n; ++i)
+            std::cout << i <<". "<< msgs[i] << std::endl;
+        std::cout << "> " << std::endl;
+
+
+        do {
+            std::cin >> temp;
+
+        } while (temp == '\n');
+
+        choice = temp - '0';
+        while (getchar() != '\n');
+        if (choice < 0 || choice >= n)
+            printf("You're wrong. Try again!\n");
+
+//        delay(500);
+        printf("\033[0d\033[2J");
+
     } while (choice < 0 || choice >= n);
+
     return choice;
 }
 
+template <typename T>
+void second_menu(T set1, T set2) {
+
+    int menu;
+    do {
+        menu = dialog(MENU_THIRD, MENU_THIRD_SIZE);
+
+        switch(menu) {
+            case 0: //Отмена
+                break;
+            case 1:
+                cout << "\nOption 1 - First set max value\n";
+
+                if (set1->GetLength() == 0) {
+                    cout << "First set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                cout << set1->GetMax();
+                break;
+            case 2:
+                cout << "\nOption 2 - Second set max value\n";
+
+                if (set2->GetLength() == 0) {
+                    cout << "Second set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                cout << set2->GetMax();
+                break;
+            case 3:
+                cout << "\nOption 3 - Union\n";
+
+                if (set1->GetLength() == 0) {
+                    cout << "First set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                if (set2->GetLength() == 0) {
+                    cout << "Second set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                cout << (*set1 + *set2) << endl;
+                break;
+            case 4:
+                cout << "\nOption 4 - Crossing\n";
+
+                if (set1->GetLength() == 0) {
+                    cout << "First set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                if (set2->GetLength() == 0) {
+                    cout << "Second set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                cout << (*set1 * *set2) << endl;
+                break;
+            case 5:
+                cout << "\nOption 5 - Subtraction (first set - second set)\n";
+
+                if (set1->GetLength() == 0) {
+                    cout << "First set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                if (set2->GetLength() == 0) {
+                    cout << "Second set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                cout << (*set1 - *set2) << endl;
+                break;
+            case 6:
+                cout << "\nOption 6 - Subtraction (second set - first set)\n";
+
+                if (set1->GetLength() == 0) {
+                    cout << "First set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                if (set2->GetLength() == 0) {
+                    cout << "Second set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                cout << (*set2 - *set1) << endl;
+                break;
+            case 7:
+                cout << "\nOption 7 - Subset inclusion check (second set in first set)\n";
+
+                if (set1->GetLength() == 0) {
+                    cout << "First set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                if (set2->GetLength() == 0) {
+                    cout << "Second set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                cout << (set1->CheckSubset(set2) ? "Second set is in first set" : "Second set is not in first set") << endl;
+                break;
+            case 8:
+                cout << "\nOption 8 - Subset inclusion check (first set in second set)\n";
+
+                if (set1->GetLength() == 0) {
+                    cout << "First set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                if (set2->GetLength() == 0) {
+                    cout << "Second set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                cout << (set2->CheckSubset(set1) ? "First set is in second set" : "First set is not in second set") << endl;
+                break;
+            case 9:
+                cout << "\nOption 9 - Equality check\n";
+
+                if (set1->GetLength() == 0) {
+                    cout << "First set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                if (set2->GetLength() == 0) {
+                    cout << "Second set is empty.\n Please use generate or keyboard input.\n";
+                    break;
+                }
+                cout << ((*set1 == *set2) ? "Sets are equals" : "Sets are not equal") << endl;
+                break;
+            default:
+                printf("***Error, please try again***\n");
+                break;
+        }
+    } while (menu != 0);
+}
+
 int main() {
-    srand(time(NULL));
-    int cmd = 0;
-    int cmd_action = 0;
+//    srand(time(NULL));
 
     int mode;
 
@@ -73,10 +211,6 @@ int main() {
     auto *setFloat2 = new Set<float>;
     float nFloat;
 
-//    Set<Complex> *setComplex1 = new Set<Complex>;
-//    Set<Complex> *setComplex2 = new Set<Complex>;
-//    Complex nComplex;
-
     auto *setString1 = new Set<string>;
     auto *setString2 = new Set<string>;
     string nString;
@@ -85,34 +219,30 @@ int main() {
     auto *set2 = new Set<Person>;
     Person nPerson;
 
-    cout << "Hello! I've made a little program for working with sets. You are welcome :)\n";
+    int menu = 0, menu2 = 0;
     do {
-        cmd = dialog(MSGS_TYPE, MSGS_TYPE_SIZE);
-        switch(cmd) {
-            case 0:
-                cout << "Goodbye! :)";
+
+        menu = dialog(MENU_MAIN, MENU_MAIN_SIZE);
+
+        switch (menu) {
+            case 0: //Отмена
                 break;
-            case 1:
-                cout << "\nOption 1 - Integer sets\n";
-                cmd_action = 0;
+            case 1: {//integer
                 do {
-                    cmd_action = dialog(MSGS, MSGS_SIZE);
+                    menu2 = dialog(MENU_SECOND, MENU_SECOND_SIZE);
                     mode = 0;
                     nInt = 0;
-                    switch (cmd_action) {
+                    switch (menu2) {
                         case 0:
-                            cout << "Goodbye! :)";
-                            cmd = 0;
-                            cmd_action = 0;
+                            menu = 0;
+                            menu2 = 0;
                             break;
                         case 1:
                             setInt1->Clear();
                             setInt2->Clear();
-                            cmd_action = 0;
+                            menu2 = 0;
                             break;
                         case 2:
-                            cout << "\nOption 2 - First set generate (max n elements)\n";
-
                             if (setInt1->GetLength() != 0) setInt1->Clear();
                             cout << "Input number of elements: ";
                             mode = readInt(nInt);
@@ -127,8 +257,6 @@ int main() {
                             cout << "Generated first set:\n" << *setInt1 << endl;
                             break;
                         case 3:
-                            cout << "\nOption 3 - Second set generate (max n elements)\n";
-
                             if (setInt2->GetLength() != 0) setInt2->Clear();
                             cout << "Input number of elements: ";
                             mode = readInt(nInt);
@@ -142,28 +270,9 @@ int main() {
                             setInt2->Generate(nInt, randomInt);
                             cout << "Generated second set:\n" << *setInt2 << endl;
                             break;
+
                         case 4:
-                            cout << "\nOption 4 - First set max value\n";
-
-                            if (setInt1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << setInt1->GetMax();
-                            break;
-                        case 5:
-                            cout << "\nOption 5 - Second set max value\n";
-
-                            if (setInt2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << setInt2->GetMax();
-                            break;
-                        case 6:
-                            cout << "\nOption 6 - First set insert value\n";
-
-                            cout << "Input elemet: ";
+                            cout << "Input element: ";
                             mode = readInt(nInt);
                             if (mode != 0) {
                                 break;
@@ -171,10 +280,8 @@ int main() {
                             setInt1->Insert(nInt);
                             cout << "Success!\n" << *setInt1 << endl;
                             break;
-                        case 7:
-                            cout << "\nOption 7 - Second set insert value\n";
-
-                            cout << "Input elemet: ";
+                        case 5:
+                            cout << "Input element: ";
                             mode = readInt(nInt);
                             if (mode != 0) {
                                 break;
@@ -182,121 +289,34 @@ int main() {
                             setInt2->Insert(nInt);
                             cout << "Success!\n" << *setInt2 << endl;
                             break;
-                        case 8:
-                            cout << "\nOption 8 - Union\n";
-
-                            if (setInt1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setInt2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*setInt1 + *setInt2) << endl;
+                        case 6: //next step
+                            second_menu(setInt1, setInt2);
                             break;
-                        case 9:
-                            cout << "\nOption 9 - Crossing\n";
-
-                            if (setInt1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setInt2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*setInt1 * *setInt2) << endl;
-                            break;
-                        case 10:
-                            cout << "\nOption 10 - Subtraction (first set - second set)\n";
-
-                            if (setInt1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setInt2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*setInt1 - *setInt2) << endl;
-                            break;
-                        case 11:
-                            cout << "\nOption 11 - Subtraction (second set - first set)\n";
-
-                            if (setInt1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setInt2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*setInt2 - *setInt1) << endl;
-                            break;
-                        case 12:
-                            cout << "\nOption 12 - Subset inclusion check (second set in first set)\n";
-
-                            if (setInt1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setInt2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (setInt1->CheckSubset(setInt2) ? "Second set is in first set" : "Second set is not in first set") << endl;
-                            break;
-                        case 13:
-                            cout << "\nOption 13 - Subset inclusion check (first set in second set)\n";
-
-                            if (setInt1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setInt2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (setInt2->CheckSubset(setInt1) ? "First set is in second set" : "First set is not in second set") << endl;
-                            break;
-                        case 14:
-                            cout << "\nOption 14 - Equality check\n";
-
-                            if (setInt1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setInt2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << ((*setInt1 == *setInt2) ? "Sets are equels" : "Sets are not equels") << endl;
+                        default:
+                            printf("***Error, please try again***\n");
                             break;
                     }
-                } while(cmd_action != 0);
-                break;
-            case 2:
-                cout << "\nOption 2 - Float sets\n";
-                cmd_action = 0;
+                } while (menu2 != 0);
+            }
+
+            case 2: {//double
                 do {
-                    cmd_action = dialog(MSGS, MSGS_SIZE);
-                    switch (cmd_action) {
+                    menu2 = dialog(MENU_SECOND, MENU_SECOND_SIZE);
+                    mode = 0;
+                    nInt = 0;
+                    switch (menu2) {
                         case 0:
-                            cout << "Goodbye! :)";
-                            cmd = 0;
-                            cmd_action = 0;
+                            menu = 0;
+                            menu2 = 0;
                             break;
                         case 1:
                             setFloat1->Clear();
                             setFloat2->Clear();
-                            cmd_action = 0;
+                            menu2 = 0;
                             break;
                         case 2:
-                            cout << "\nOption 2 - First set generate (max n elements)\n";
-
                             if (setFloat1->GetLength() != 0) setFloat1->Clear();
-                            cout << "Input number of pieces: ";
+                            cout << "Input number of elements: ";
                             mode = readInt(nInt);
                             if (mode != 0) {
                                 break;
@@ -309,10 +329,8 @@ int main() {
                             cout << "Generated first set:\n" << *setFloat1 << endl;
                             break;
                         case 3:
-                            cout << "\nOption 3 - Second set generate (max n elements)\n";
-
-                            if (setFloat2->GetLength() != 0) setFloat2->Clear();
-                            cout << "Input number of pieces: ";
+                            if (setInt2->GetLength() != 0) setInt2->Clear();
+                            cout << "Input number of elements: ";
                             mode = readInt(nInt);
                             if (mode != 0) {
                                 break;
@@ -324,28 +342,9 @@ int main() {
                             setFloat2->Generate(nInt, randomFloat);
                             cout << "Generated second set:\n" << *setFloat2 << endl;
                             break;
+
                         case 4:
-                            cout << "\nOption 4 - First set max value\n";
-
-                            if (setFloat1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << setFloat1->GetMax();
-                            break;
-                        case 5:
-                            cout << "\nOption 5 - Second set max value\n";
-
-                            if (setFloat2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << setFloat2->GetMax();
-                            break;
-                        case 6:
-                            cout << "\nOption 6 - First set insert value\n";
-
-                            cout << "Input elemet: ";
+                            cout << "Input element: ";
                             mode = readFloat(nFloat);
                             if (mode != 0) {
                                 break;
@@ -353,10 +352,8 @@ int main() {
                             setFloat1->Insert(nFloat);
                             cout << "Success!\n" << *setFloat1 << endl;
                             break;
-                        case 7:
-                            cout << "\nOption 7 - Second set insert value\n";
-
-                            cout << "Input elemet: ";
+                        case 5:
+                            cout << "Input element: ";
                             mode = readFloat(nFloat);
                             if (mode != 0) {
                                 break;
@@ -364,303 +361,34 @@ int main() {
                             setFloat2->Insert(nFloat);
                             cout << "Success!\n" << *setFloat2 << endl;
                             break;
-                        case 8:
-                            cout << "\nOption 8 - Union\n";
-
-                            if (setFloat1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setFloat2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*setFloat1 + *setFloat2) << endl;
+                        case 6: //next step
+                            second_menu(setFloat1, setFloat2);
                             break;
-                        case 9:
-                            cout << "\nOption 9 - Crossing\n";
-
-                            if (setFloat1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setFloat2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*setFloat1 * *setFloat2) << endl;
-                            break;
-                        case 10:
-                            cout << "\nOption 10 - Subtraction (first set - second set)\n";
-
-                            if (setFloat1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setFloat2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*setFloat1 - *setFloat2) << endl;
-                            break;
-                        case 11:
-                            cout << "\nOption 11 - Subtraction (second set - first set)\n";
-
-                            if (setFloat1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setFloat2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*setFloat2 - *setFloat1) << endl;
-                            break;
-                        case 12:
-                            cout << "\nOption 12 - Subset inclusion check (second set in first set)\n";
-
-                            if (setFloat1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setFloat2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (setFloat1->CheckSubset(setFloat2) ? "Second set is in first set" : "Second set is not in first set") << endl;
-                            break;
-                        case 13:
-                            cout << "\nOption 13 - Subset inclusion check (first set in second set)\n";
-
-                            if (setFloat1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setFloat1->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (setFloat2->CheckSubset(setFloat1) ? "First set is in second set" : "First set is not in second set") << endl;
-                            break;
-                        case 14:
-                            cout << "\nOption 14 - Equality check\n";
-
-                            if (setFloat1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setFloat2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << ((*setFloat1 == *setFloat2) ? "Sets are equels" : "Sets are not equels") << endl;
+                        default:
+                            printf("***Error, please try again***\n");
                             break;
                     }
-                } while(cmd_action != 0);
-                break;
-            case 3:
-                cout << "\nOption 3 - Complex sets\n";
-                cmd_action = 0;
-                do {
-                    cmd_action = dialog(MSGS, MSGS_SIZE);
-                    switch (cmd_action) {
-                        case 0:
-                            cout << "Goodbye! :)";
-                            cmd = 0;
-                            cmd_action = 0;
-                            break;
-                        case 1:
-//                            setComplex1->Clear();
-//                            setComplex2->Clear();
-//                            cmd_action = 0;
-                            break;
-                        case 2:
-//                            cout << "\nOption 2 - First set generate (max n elements)\n";
-//
-//                            if (setComplex1->GetLength() != 0) setComplex1->Clear();
-//                            cout << "Input number of pieces: ";
-//                            mode = readInt(nInt);
-//                            if (mode != 0) {
-//                                break;
-//                            }
-//                            if (nInt <= 0) {
-//                                cout << "The number must be positive.\n";
-//                                break;
-//                            }
-//                            setComplex1->Generate(nInt, randomComplex);
-//                            cout << "Generated first set:\n" << *setComplex1 << endl;
-                            break;
-                        case 3:
-//                            cout << "\nOption 3 - Second set generate (max n elements)\n";
-//
-//                            if (setComplex2->GetLength() != 0) setComplex2->Clear();
-//                            cout << "Input number of pieces: ";
-//                            mode = readInt(nInt);
-//                            if (mode != 0) {
-//                                break;
-//                            }
-//                            if (nInt <= 0) {
-//                                cout << "The number must be positive.\n";
-//                                break;
-//                            }
-//                            setComplex2->Generate(nInt, randomComplex);
-//                            cout << "Generated second set:\n" << *setComplex2 << endl;
-                            break;
-                        case 4:
-//                            cout << "\nOption 4 - First set max value\n";
-//
-//                            if (setComplex1->GetLength() == 0) {
-//                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            cout << setComplex1->GetMax();
-                            break;
-                        case 5:
-//                            cout << "\nOption 5 - Second set max value\n";
-//
-//                            if (setComplex2->GetLength() == 0) {
-//                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            cout << setComplex2->GetMax();
-                            break;
-                        case 6:
-//                            cout << "\nOption 6 - First set insert value\n";
-//
-//                            cout << "Input elemet: ";
-//                            mode = readComplex(nComplex);
-//                            if (mode != 0) {
-//                                break;
-//                            }
-//                            setComplex1->Insert(nComplex);
-//                            cout << "Success!\n" << *setComplex1 << endl;
-                            break;
-                        case 7:
-//                            cout << "\nOption 7 - Second set insert value\n";
-//
-//                            cout << "Input elemet: ";
-//                            mode = readComplex(nComplex);
-//                            if (mode != 0) {
-//                                break;
-//                            }
-//                            setComplex2->Insert(nComplex);
-//                            cout << "Success!\n" << *setComplex2 << endl;
-                            break;
-                        case 8:
-//                            cout << "\nOption 8 - Union\n";
-//
-//                            if (setComplex1->GetLength() == 0) {
-//                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            if (setComplex2->GetLength() == 0) {
-//                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            cout << (*setComplex1 + *setComplex2) << endl;
-                            break;
-                        case 9:
-//                            cout << "\nOption 9 - Crossing\n";
-//
-//                            if (setComplex1->GetLength() == 0) {
-//                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            if (setComplex2->GetLength() == 0) {
-//                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            cout << (*setComplex1 * *setComplex2) << endl;
-                            break;
-                        case 10:
-//                            cout << "\nOption 10 - Subtraction (first set - second set)\n";
-//
-//                            if (setComplex1->GetLength() == 0) {
-//                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            if (setComplex2->GetLength() == 0) {
-//                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            cout << (*setComplex1 - *setComplex2) << endl;
-                            break;
-                        case 11:
-//                            cout << "\nOption 11 - Subtraction (second set - first set)\n";
-//
-//                            if (setComplex1->GetLength() == 0) {
-//                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            if (setComplex2->GetLength() == 0) {
-//                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            cout << (*setComplex2 - *setComplex1) << endl;
-                            break;
-                        case 12:
-//                            cout << "\nOption 12 - Subset inclusion check (second set in first set)\n";
-//
-//                            if (setComplex1->GetLength() == 0) {
-//                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            if (setComplex2->GetLength() == 0) {
-//                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            cout << (setComplex1->CheckSubset(setComplex2) ? "Second set is in first set" : "Second set is not in first set") << endl;
-                            break;
-                        case 13:
-//                            cout << "\nOption 13 - Subset inclusion check (first set in second set)\n";
-//
-//                            if (setComplex1->GetLength() == 0) {
-//                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            if (setComplex2->GetLength() == 0) {
-//                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            cout << (setComplex2->CheckSubset(setComplex1) ? "First set is in second set" : "First set is not in second set") << endl;
-                            break;
-                        case 14:
-//                            cout << "\nOption 14 - Equality check\n";
-//
-//                            if (setComplex1->GetLength() == 0) {
-//                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            if (setComplex2->GetLength() == 0) {
-//                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-//                                break;
-//                            }
-//                            cout << ((*setComplex1 == *setComplex2) ? "Sets are equels" : "Sets are not equels") << endl;
-                            break;
-                    }
-                } while(cmd_action != 0);
-                break;
-            case 4:
-                cout << "\nOption 4 - String sets\n";
-                cmd_action = 0;
-                do {
-                    cmd_action = dialog(MSGS, MSGS_SIZE);
-                    switch (cmd_action) {
-                        case 0:
-                            cout << "Goodbye! :)";
-                            cmd = 0;
-                            cmd_action = 0;
-                            break;
-                        case 1:
-//                            setComplex1->Clear();
-//                            setComplex2->Clear();
-//                            cmd_action = 0;
-                            break;
-                        case 2:
-                            cout << "\nOption 2 - First set generate (max n elements)\n";
+                } while (menu2 != 0);
+            }
 
+            case 3: {//string
+                do {
+                    menu2 = dialog(MENU_SECOND, MENU_SECOND_SIZE);
+                    mode = 0;
+                    nInt = 0;
+                    switch (menu2) {
+                        case 0:
+                            menu = 0;
+                            menu2 = 0;
+                            break;
+                        case 1:
+                            setString1->Clear();
+                            setString2->Clear();
+                            menu2 = 0;
+                            break;
+                        case 2:
                             if (setString1->GetLength() != 0) setString1->Clear();
-                            cout << "Input number of pieces: ";
+                            cout << "Input number of elements: ";
                             mode = readInt(nInt);
                             if (mode != 0) {
                                 break;
@@ -673,8 +401,6 @@ int main() {
                             cout << "Generated first set:\n" << *setString1 << endl;
                             break;
                         case 3:
-                            cout << "\nOption 3 - Second set generate (max n elements)\n";
-
                             if (setString2->GetLength() != 0) setString2->Clear();
                             cout << "Input number of pieces: ";
                             mode = readInt(nInt);
@@ -688,28 +414,9 @@ int main() {
                             setString2->Generate(nInt, randomString);
                             cout << "Generated second set:\n" << *setString2 << endl;
                             break;
+
                         case 4:
-                            cout << "\nOption 4 - First set max value\n";
-
-                            if (setString1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << setString1->GetMax();
-                            break;
-                        case 5:
-                            cout << "\nOption 5 - Second set max value\n";
-
-                            if (setString2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << setString2->GetMax();
-                            break;
-                        case 6:
-                            cout << "\nOption 6 - First set insert value\n";
-
-                            cout << "Input elemet: ";
+                            cout << "Input element: ";
                             mode = readString(nString);
                             if (mode != 0) {
                                 break;
@@ -717,10 +424,8 @@ int main() {
                             setString1->Insert(nString);
                             cout << "Success!\n" << *setString1 << endl;
                             break;
-                        case 7:
-                            cout << "\nOption 7 - Second set insert value\n";
-
-                            cout << "Input elemet: ";
+                        case 5:
+                            cout << "Input element: ";
                             mode = readString(nString);
                             if (mode != 0) {
                                 break;
@@ -728,119 +433,32 @@ int main() {
                             setString2->Insert(nString);
                             cout << "Success!\n" << *setString2 << endl;
                             break;
-                        case 8:
-                            cout << "\nOption 8 - Union\n";
-
-                            if (setString1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setString2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*setString1 + *setString2) << endl;
+                        case 6: //next step
+                            second_menu(setString1, setString2);
                             break;
-                        case 9:
-                            cout << "\nOption 9 - Crossing\n";
-
-                            if (setString1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setString2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*setString1 * *setString2) << endl;
-                            break;
-                        case 10:
-                            cout << "\nOption 10 - Subtraction (first set - second set)\n";
-
-                            if (setString1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setString2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*setString1 - *setString2) << endl;
-                            break;
-                        case 11:
-                            cout << "\nOption 11 - Subtraction (second set - first set)\n";
-
-                            if (setString1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setString2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*setString2 - *setString1) << endl;
-                            break;
-                        case 12:
-                            cout << "\nOption 12 - Subset inclusion check (second set in first set)\n";
-
-                            if (setString1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setString2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (setString1->CheckSubset(setString2) ? "Second set is in first set" : "Second set is not in first set") << endl;
-                            break;
-                        case 13:
-                            cout << "\nOption 13 - Subset inclusion check (first set in second set)\n";
-
-                            if (setString1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setString2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (setString2->CheckSubset(setString1) ? "First set is in second set" : "First set is not in second set") << endl;
-                            break;
-                        case 14:
-                            cout << "\nOption 14 - Equality check\n";
-
-                            if (setString1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (setString2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << ((*setString1 == *setString2) ? "Sets are equels" : "Sets are not equels") << endl;
+                        default:
+                            printf("***Error, please try again***\n");
                             break;
                     }
-                } while(cmd_action != 0);
-                break;
-            case 5:
-                cout << "\nOption 5 - Person sets\n";
-                cmd_action = 0;
+                } while (menu2 != 0);
+            }
+
+            case 4: {//person
                 do {
-                    cmd_action = dialog(MSGS, MSGS_SIZE);
-                    switch (cmd_action) {
+                    menu2 = dialog(MENU_SECOND, MENU_SECOND_SIZE);
+                    mode = 0;
+                    nInt = 0;
+                    switch (menu2) {
                         case 0:
-                            cout << "Goodbye! :)";
-                            cmd = 0;
-                            cmd_action = 0;
+                            menu = 0;
+                            menu2 = 0;
                             break;
                         case 1:
-                            set1->Clear();
-                            set2->Clear();
-                            cmd_action = 0;
+                            setInt1->Clear();
+                            setInt2->Clear();
+                            menu2 = 0;
                             break;
                         case 2:
-                            cout << "\nOption 2 - First set generate (max n elements)\n";
-
                             if (set1->GetLength() != 0) set1->Clear();
                             cout << "Input number of pieces: ";
                             mode = readInt(nInt);
@@ -855,8 +473,6 @@ int main() {
                             cout << "Generated first set:\n" << *set1 << endl;
                             break;
                         case 3:
-                            cout << "\nOption 3 - Second set generate (max n elements)\n";
-
                             if (set2->GetLength() != 0) set2->Clear();
                             cout << "Input number of pieces: ";
                             mode = readInt(nInt);
@@ -870,28 +486,9 @@ int main() {
                             set2->Generate(nInt, randomPerson);
                             cout << "Generated second set:\n" << *set2 << endl;
                             break;
+
                         case 4:
-                            cout << "\nOption 4 - First set max value\n";
-
-                            if (set1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << set1->GetMax();
-                            break;
-                        case 5:
-                            cout << "\nOption 5 - Second set max value\n";
-
-                            if (set2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << set2->GetMax();
-                            break;
-                        case 6:
-                            cout << "\nOption 6 - First set insert value\n";
-
-                            cout << "Input elemet: ";
+                            cout << "Input element: ";
                             mode = readPerson(nPerson);
                             if (mode != 0) {
                                 break;
@@ -899,10 +496,8 @@ int main() {
                             set1->Insert(nPerson);
                             cout << "Success!\n" << *set1 << endl;
                             break;
-                        case 7:
-                            cout << "\nOption 7 - Second set insert value\n";
-
-                            cout << "Input elemet: ";
+                        case 5:
+                            cout << "Input element: ";
                             mode = readPerson(nPerson);
                             if (mode != 0) {
                                 break;
@@ -910,102 +505,20 @@ int main() {
                             set2->Insert(nPerson);
                             cout << "Success!\n" << *set2 << endl;
                             break;
-                        case 8:
-                            cout << "\nOption 8 - Union\n";
-
-                            if (set1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (set2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*set1 + *set2) << endl;
+                        case 6: //next step
+                            second_menu(set1, set2);
                             break;
-                        case 9:
-                            cout << "\nOption 9 - Crossing\n";
-
-                            if (set1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (set2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*set1 * *set2) << endl;
-                            break;
-                        case 10:
-                            cout << "\nOption 10 - Subtraction (first set - second set)\n";
-
-                            if (set1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (set2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*set1 - *set2) << endl;
-                            break;
-                        case 11:
-                            cout << "\nOption 11 - Subtraction (second set - first set)\n";
-
-                            if (set1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (set2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (*set2 - *set1) << endl;
-                            break;
-                        case 12:
-                            cout << "\nOption 12 - Subset inclusion check (second set in first set)\n";
-
-                            if (set1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (set2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (set1->CheckSubset(set2) ? "Second set is in first set" : "Second set is not in first set") << endl;
-                            break;
-                        case 13:
-                            cout << "\nOption 13 - Subset inclusion check (first set in second set)\n";
-
-                            if (set1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (set2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << (set2->CheckSubset(set1) ? "First set is in second set" : "First set is not in second set") << endl;
-                            break;
-                        case 14:
-                            cout << "\nOption 14 - Equality check\n";
-
-                            if (set1->GetLength() == 0) {
-                                cout << "First set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            if (set2->GetLength() == 0) {
-                                cout << "Second set is empty.\n Please use generate or keyboard input.\n";
-                                break;
-                            }
-                            cout << ((*set1 == *set2) ? "Sets are equels" : "Sets are not equels") << endl;
+                        default:
+                            printf("***Error, please try again***\n");
                             break;
                     }
-                } while(cmd_action != 0);
-                break;
-        }
-    } while (cmd != 0);
+                } while (menu2 != 0);
+            }
 
-    return 0;
+            default:
+                printf("***Error, please try again***\n");
+            break;
+
+        }
+    } while (menu != 0);
 }
